@@ -11,8 +11,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # General server configuration. 
-  config.vm.box = "debian/jessie64"
-  config.vm.box_url = "https://atlas.hashicorp.com/debian/boxes/jessie64"
+  #config.vm.box = "debian/jessie64"
+  config.vm.box = "ubuntu/xenial64"    
+  #config.vm.box_url = "https://atlas.hashicorp.com/debian/boxes/jessie64"
+  config.vm.box_url = "https://atlas.hashicorp.com/ubuntu/boxes/xenial64"
   config.vm.host_name = "javaee-wildfly-dev"
 
   # Use vagrant-cachier plugin to cache downloaded files.
@@ -39,7 +41,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Execute server setup scripts
   config.vm.provision "shell", path: "vagrant/boxUpdate.sh"
   config.vm.provision :reload 
-  config.vm.provision "shell", path: "vagrant/openJdk.sh"
+  config.vm.provision "shell", path: "vagrant/oracleJdk.sh"
   config.vm.provision "shell", path: "vagrant/postgreSql.sh"
   config.vm.provision "shell", path: "vagrant/wildfly.sh"
   config.vm.provision "shell", path: "vagrant/boxCleanup.sh"
