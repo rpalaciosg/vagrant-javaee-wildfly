@@ -10,9 +10,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.name = "JavaeeWildflyDev"
   end
 
-  # General server configuration. 
+  # General server configuration.
   #config.vm.box = "debian/jessie64"
-  config.vm.box = "ubuntu/xenial64"    
+  config.vm.box = "ubuntu/xenial64"
   #config.vm.box_url = "https://atlas.hashicorp.com/debian/boxes/jessie64"
   config.vm.box_url = "https://atlas.hashicorp.com/ubuntu/boxes/xenial64"
   config.vm.host_name = "javaee-wildfly-dev"
@@ -30,20 +30,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # Define port forwarding for the application service, ...
-  config.vm.network :forwarded_port, host: 9994, guest: 9994
+  #config.vm.network :forwarded_port, host: 9994, guest: 9994
+  config.vm.network :forwarded_port, host: 9990, guest: 9990
 
   # ... the wildfly server ...
   config.vm.network :forwarded_port, host: 8080, guest: 8080
 
   # ... and the PostgreSQL Server.
-  config.vm.network :forwarded_port, host: 5432, guest: 15432
+  #config.vm.network :forwarded_port, host: 5432, guest: 15432
+  config.vm.network :forwarded_port, host: 5432, guest: 5432
 
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  config.vm.network :private_network, ip: "192.168.56.128"
   # Execute server setup scripts
   config.vm.provision "shell", path: "vagrant/boxUpdate.sh"
-  config.vm.provision :reload 
+  config.vm.provision :reload
   config.vm.provision "shell", path: "vagrant/oracleJdk.sh"
   config.vm.provision "shell", path: "vagrant/postgreSql.sh"
   config.vm.provision "shell", path: "vagrant/wildfly.sh"
-  config.vm.provision "shell", path: "vagrant/boxCleanup.sh"
-  config.vm.provision "shell", path: "vagrant/conclusion.sh"  
+  #config.vm.provision "shell", path: "vagrant/boxCleanup.sh"
+  config.vm.provision "shell", path: "vagrant/conclusion.sh"
 end

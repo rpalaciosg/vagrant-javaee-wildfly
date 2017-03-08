@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-# Read installation parameters from config.cfg file.                            
-if [ -f /vagrant/vagrant/config.cfg ]; then                                     
-  source /vagrant/vagrant/config.cfg                                            
-else                                                                            
-  echo "ERROR: file config.cfg not found. Exiting."                             
-  exit 1                                                                        
+# Read installation parameters from config.cfg file.
+if [ -f /vagrant/vagrant/config.cfg ]; then
+  source /vagrant/vagrant/config.cfg
+else
+  echo "ERROR: file config.cfg not found. Exiting."
+  exit 1
 fi
 
 # Download wildfly archive if it does not exist.
@@ -39,17 +39,17 @@ useradd -s /sbin/nologin $WILDFLY_SYSTEM_USER
 chown -R $WILDFLY_SYSTEM_USER:$WILDFLY_SYSTEM_USER $WILDFLY_DIR
 chown -R $WILDFLY_SYSTEM_USER:$WILDFLY_SYSTEM_USER $WILDFLY_DIR/
 
-# Ccreate a wildfly service script ...  
+# Ccreate a wildfly service script ...
 echo "[Unit]
 Description=WildFly application server
 After=network.target
- 
+
 [Service]
 Type=simple
 User=$WILDFLY_SYSTEM_USER
 Group=$WILDFLY_SYSTEM_USER
 ExecStart=$WILDFLY_DIR/bin/standalone.sh
- 
+
 [Install]
 WantedBy=multi-user.target" > $WILDFLY_SERVICE_PATH
 
@@ -58,9 +58,10 @@ WILDFLY_SERVICE_CONF=/etc/default/$WILDFLY_SERVICE
 
 # Set the proper access rights for the service configuration.
 chmod 755 $WILDFLY_SERVICE_PATH
- 
+
 # Set environment variables for wildfly.
 if [ ! -z "$WILDFLY_SERVICE_CONF" ]; then
+#if [ -z "$WILDFLY_SERVICE_CONF" ]; then
   echo JBOSS_HOME=\"$WILDFLY_DIR\" > $WILDFLY_SERVICE_CONF
   echo JBOSS_USER=$WILDFLY_USER >> $WILDFLY_SERVICE_CONF
   echo STARTUP_WAIT=$WILDFLY_STARTUP_TIMEOUT >> $WILDFLY_SERVICE_CONF
@@ -74,6 +75,6 @@ sed -i -e 's,<socket-binding name="ajp" port="${jboss.ajp.port:8009}"/>,<socket-
 sed -i -e 's,<socket-binding name="http" port="${jboss.http.port:8080}"/>,<socket-binding name="http" port="${jboss.http.port:28080}"/>,g' $WILDFLY_DIR/standalone/configuration/standalone.xml
 sed -i -e 's,<socket-binding name="https" port="${jboss.https.port:8443}"/>,<socket-binding name="https" port="${jboss.https.port:28443}"/>,g' $WILDFLY_DIR/standalone/configuration/standalone.xml
 sed -i -e 's,<socket-binding name="osgi-http" interface="management" port="8090"/>,<socket-binding name="osgi-http" interface="management" port="28090"/>,g' $WILDFLY_DIR/standalone/configuration/standalone.xml
-                     
+
 systemctl enable $WILDFLY_SERVICE
 systemctl restart $WILDFLY_SERVICE

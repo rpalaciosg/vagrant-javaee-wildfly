@@ -21,13 +21,14 @@ fi
 apt-get -y update
 
 # Install PostgreSql.
-apt-get -y install "postgresql-$Postgre_SQL_VERSION" "postgresql-contrib-$POSTGRE_SQL_VERSION"
-
+#apt-get -y install "postgresql-$Postgre_SQL_VERSION" "postgresql-contrib-$POSTGRE_SQL_VERSION"
+apt-get -y install postgresql postgresql-contrib
 # Edit postgresql.conf to change listen address to '*':
 sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" "$POSTGRE_SQL_CONF"
 
 # Append to pg_hba.conf to add password auth:
 echo "host    all             all             all                     md5" >> "$POSTGRE_SQL_HBA"
+#echo "host    all             all             0.0.0.0/0           md5" >> "$POSTGRE_SQL_HBA"
 
 # Explicitly set default client_encoding
 echo "client_encoding = utf8" >> "$POSTGRE_SQL_CONF"
@@ -41,8 +42,8 @@ CREATE USER $POSTGRE_SQL_USER WITH PASSWORD '$POSTGRE_SQL_PASS';
 
 -- Create the database:
 CREATE DATABASE $POSTGRE_SQL_NAME WITH OWNER=$POSTGRE_SQL_USER
-    LC_COLLATE='en_US.utf8' 
-    LC_CTYPE='en_US.utf8' 
+    LC_COLLATE='en_US.utf8'
+    LC_CTYPE='en_US.utf8'
     ENCODING='UTF8'
     TEMPLATE=template0;
 EOF
