@@ -76,5 +76,5 @@ sed -i -e 's,<inet-address value="${jboss.bind.address:127.0.0.1}"/>,<any-addres
 #sed -i -e 's,<socket-binding name="https" port="${jboss.https.port:8443}"/>,<socket-binding name="https" port="${jboss.https.port:28443}"/>,g' $WILDFLY_DIR/standalone/configuration/standalone.xml
 #sed -i -e 's,<socket-binding name="osgi-http" interface="management" port="8090"/>,<socket-binding name="osgi-http" interface="management" port="28090"/>,g' $WILDFLY_DIR/standalone/configuration/standalone.xml
 
-systemctl enable $WILDFLY_SERVICE
+standaloneystemctl enable $WILDFLY_SERVICE
 systemctl restart $WILDFLY_SERVICE
