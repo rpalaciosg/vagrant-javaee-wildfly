@@ -22,6 +22,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   if Vagrant.has_plugin?("vagrant-cachier")
     # Cache downloads between the same base box
     config.cache.scope = :box
+    config.cache.enable :apt #Cache de apt
+    config.cache.enable :composer
   end
 
   # Adjust box memory size
@@ -29,12 +31,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--memory", 2048]
   end
 
+
   # Define port forwarding for the application service, ...
   #config.vm.network :forwarded_port, host: 9994, guest: 9994
-  config.vm.network :forwarded_port, host: 9990, guest: 9990
+  #config.vm.network :forwarded_port, host: 9990, guest: 9990, autocorrect: true
+ config.vm.network :forwarded_port, host: 9990, guest: 9991
 
   # ... the wildfly server ...
-  config.vm.network :forwarded_port, host: 8080, guest: 8080
+  config.vm.network :forwarded_port, host: 8080, guest: 8080, autocorrect: true
 
   # ... and the PostgreSQL Server.
   #config.vm.network :forwarded_port, host: 5432, guest: 15432
@@ -42,7 +46,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network :private_network, ip: "192.168.56.128"
+  #config.vm.network :private_network, ip: "192.168.56.128", auto_config:true
+  #Create private network using dhcp y auto_config
+  #config.vm.network  "private_network", type: "dhcp"
+
   # Execute server setup scripts
   config.vm.provision "shell", path: "vagrant/boxUpdate.sh"
   config.vm.provision :reload
