@@ -1,5 +1,28 @@
 # vagrant-javaee-wildfly
-This project offers a basic Vagrant setup for JavaEE Projects with WildFly container.
+Forked from [vagrant-javaee-wildfly](https://github.com/Phidelux/vagrant-javaee-wildfly) by [Phidelux](https://github.com/Phidelux).
+
+~~~
+This project offers a basic Vagrant setup for JavaEE development environment and a Wildfly Application Server.
+~~~
+
+The BOX will be configured:
+
+* __SO__
+ : Ubuntu 16.04.
+ 
+* __Oracle JDK__
+ : Version 8
+ 
+* __Maven__
+ : Latest Version
+ 
+* __Wildfly__
+ : Versión
+
+* __Data Base__
+ : Postgresql 9.6
+ 
+> > *Note: The configuration is fully customizable.*
 
 ## Prerequirements
 
